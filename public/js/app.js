@@ -1,3 +1,11 @@
+if (
+	(!destinationAddress.includes('.eth') && !destinationAddress.includes('0x')) ||
+	(destinationAddress.includes('0x') && destinationAddress.length !== 42)
+) {
+	document.getElementById('error').innerHTML =
+		'Make sure you double check the address before sending ETH. This one looks invalid.'
+}
+
 ;(async () => {
 	let signer
 	let provider
