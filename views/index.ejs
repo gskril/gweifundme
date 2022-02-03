@@ -4,11 +4,34 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buy Me a JPEG</title>
+  <title>Pay My Gas</title>
+  <meta property="og:title" content="Pay My Gas">
+  <meta name="description" content="Donate to ETH addresses so they can afford gas.">
+  <meta name="og:description" content="Donate to ETH addresses so they can afford gas.">
+  <meta name="twitter:site" content="@gregskril" />
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <p>Who do you want to buy a JPEG for?</p>
-  <input type="text" placeholder="wallet address">
-  <button onclick="window.location.replace(`/${document.querySelector('input').value}`)">Go to page</button>
+  <div class="container">
+    <div class="hero">
+      <div class="hero__text">
+        <h1 class="hero__title">Pay My Gas</h1>
+        <h2>Donate to your frens so they can afford gas.</h2>
+      </div>
+
+      <form class="form">
+        <input class="form__input" type="text" placeholder="Wallet address or ENS name">
+        <button class="btn" type="submit">Donate</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      window.location.replace(`/${document.querySelector('input').value}`)
+    });
+  </script>
 </body>
 </html>

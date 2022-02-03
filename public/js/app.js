@@ -1,9 +1,11 @@
+const errorMsg = document.querySelector('.form__error')
+
 if (
 	(!destinationAddress.includes('.eth') && !destinationAddress.includes('0x')) ||
 	(destinationAddress.includes('0x') && destinationAddress.length !== 42)
 ) {
-	document.getElementById('error').innerHTML =
-		'Make sure you double check the address before sending ETH. This one looks invalid.'
+	errorMsg.innerHTML =
+		'Double check the address before sending ETH. This one looks invalid.'
 }
 
 ;(async () => {
@@ -19,6 +21,7 @@ if (
 		const history  = await etherscanProvider.getHistory(destinationAddress)
 		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas'))
 		if (previousDonations.length > 0) {
+			document.querySelector('.transactions').style.display = "block"
 			previousDonations.forEach(tx => {
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
@@ -46,14 +49,21 @@ if (
 			ethers.utils.formatEther(await signer.getBalance())
 		)
 
-		document.getElementById('wallet').innerHTML = `gm ${myAddress.slice(0,6)}`
-		document.getElementById('connect').setAttribute('disabled', true)
+		document.getElementById('wallet').innerHTML = `Signed in as: ${myAddress.slice(0,6)}`
 
 		if (destinationAddress.includes('.eth')) {
 			destinationAddress = await provider.resolveName(destinationAddress)
 		}
+
+		document.getElementById('donate-btn').removeAttribute('disabled')
 	} catch (error) {
-		alert(error.message)
+		try {
+			if (ethereum) {
+				alert(error.message)
+			}
+		} catch (error) {
+			errorMsg.innerHTML = "You need MetaMask installed."
+		}
 	}
 
 	document.getElementById('donate').addEventListener('submit', async (e) => {

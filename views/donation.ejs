@@ -4,23 +4,35 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buy <%= address.includes('.eth') ? address : address.slice(0, 6) %> a jpeg</title>
+  <title>Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas</title>
+  <meta property="og:title" content="Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas">
+  <meta name="description" content="Donate ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
+  <meta name="og:description" content="Donate to ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
+  <meta name="twitter:site" content="@gregskril" />
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
-  <button onclick="connectWallet()" id="connect">Conect wallet</button>
-  <span id="wallet"></span>
-  <p>Support <%= address %></p>
-  <p><strong id="error"></strong></p>
-
-  <form id="donate">
-    <label for="amount">How much ether do you want to send?</label>
-    <input type="number" step="any" name="amount" id="amount">
-    <input type="hidden" name="address" id="address" value="<%= address %>">
-    <button type="submit">Send</button>
-  </form>
-
-  <div class="transactions" style="margin-top: 1rem;"></div>
+  <div class="container container--padding">
+    <span id="wallet"></span>
+    <div class="donation">
+      <h1>Help <span class="title-accent"><%= address %></span> pay gas</h1>
+    
+      <form class="form" id="donate">
+        <div class="form__input-group">
+          <label class="form__label" for="amount">How much ETH do you want to send?</label>
+          <input class="form__input" type="number" step="any" name="amount" id="amount" placeholder="0.01">
+        </div>
+        <button class="btn" id="donate-btn" type="submit" disabled>Donate</button>
+        <p class="form__error"></p>
+      </form>
+    </div>
+    
+  
+    <div class="transactions" style="display: none;">
+      <h2 class="transactions__title">Previous transactions:</h2>
+    </div>
+  </div>
 
   <script>
     let destinationAddress = "<%= address %>";
