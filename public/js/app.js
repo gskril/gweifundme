@@ -11,25 +11,9 @@ if (
 	let provider
 	let myBalance
 	let etherscanProvider
+
 	try {
-		await ethereum.request({ method: 'eth_requestAccounts' })
-
-		provider = new ethers.providers.Web3Provider(window.ethereum)
 		etherscanProvider = new ethers.providers.EtherscanProvider('homestead', 'T9RV3FGW573WX9YX45F1Z89MEMEUNQXUC7')
-		signer = provider.getSigner()
-
-		const myAddress = await signer.getAddress()
-
-		myBalance = parseFloat(
-			ethers.utils.formatEther(await signer.getBalance())
-		)
-
-		document.getElementById('wallet').innerHTML = `gm ${myAddress.slice(0,6)}`
-		document.getElementById('connect').setAttribute('disabled', true)
-
-		if (destinationAddress.includes('.eth')) {
-			destinationAddress = await provider.resolveName(destinationAddress)
-		}
 
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
@@ -45,6 +29,28 @@ if (
 				`
 				document.querySelector('.transactions').appendChild(transaction)
 			})
+		}
+	} catch (error) {
+		console.log('Error getting transactions from Etherscan.', error)
+	}
+
+	try {
+		await ethereum.request({ method: 'eth_requestAccounts' })
+
+		provider = new ethers.providers.Web3Provider(window.ethereum)
+		signer = provider.getSigner()
+
+		const myAddress = await signer.getAddress()
+
+		myBalance = parseFloat(
+			ethers.utils.formatEther(await signer.getBalance())
+		)
+
+		document.getElementById('wallet').innerHTML = `gm ${myAddress.slice(0,6)}`
+		document.getElementById('connect').setAttribute('disabled', true)
+
+		if (destinationAddress.includes('.eth')) {
+			destinationAddress = await provider.resolveName(destinationAddress)
 		}
 	} catch (error) {
 		alert(error.message)
