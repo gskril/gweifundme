@@ -31,7 +31,12 @@
       </div>
 
       <form class="form">
-        <input class="form__input" type="text" placeholder="Ethereum address or ENS name">
+        <div class="form__input-group">
+          <% if (locals?.error) { %>
+            <p class="form__error" style="text-align: center; margin-bottom: 0.5rem;"><%= error %></p>
+          <% } %>
+          <input class="form__input" type="text" placeholder="Ethereum address or ENS name">
+        </div>
         <button class="btn" type="submit">Donate</button>
       </form>
 

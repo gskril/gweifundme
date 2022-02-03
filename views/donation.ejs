@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas</title>
-  <meta property="og:title" content="Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas">
-  <meta name="description" content="Donate ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
-  <meta name="og:description" content="Donate ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
+  <title>Help <%= ens %> pay gas</title>
+  <meta property="og:title" content="Help <%= ens %> pay gas">
+  <meta name="description" content="Donate ETH to <%= ens %>">
+  <meta name="og:description" content="Donate ETH to <%= ens %>">
   <meta name="twitter:site" content="@gregskril" />
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="/css/style.css">
@@ -27,7 +27,7 @@
     <span id="wallet"></span>
     <div class="donation">
       <h1>Help <a href="https://etherscan.io/address/<%= address %>" target="_blank"
-          class="title-accent"><%= address.includes('.eth') ? address : address.slice(0, 8) %></a> pay gas</h1>
+          class="title-accent"><%= ens %></a> pay gas</h1>
     
       <form class="form" id="donate">
         <div class="form__input-group">
@@ -47,6 +47,7 @@
 
   <script>
     let destinationAddress = "<%= address %>";
+    let destinationEns = "<%= ens %>";
   </script>
   <script src="/js/ethers-5.0.umd.min.js"></script>
   <script src="/js/app.js"></script>

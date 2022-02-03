@@ -13,6 +13,7 @@ if (
 	let provider
 	let myBalance
 	let etherscanProvider
+	const transactions = document.querySelector('.transactions')
 
 	try {
 		etherscanProvider = new ethers.providers.EtherscanProvider('homestead', 'T9RV3FGW573WX9YX45F1Z89MEMEUNQXUC7')
@@ -20,10 +21,8 @@ if (
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
 		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas'))
-		const transactions = document.querySelector('.transactions')
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
-			transactions.querySelector('img').style.display = 'none'
 			previousDonations.forEach(tx => {
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
@@ -54,6 +53,7 @@ if (
 	} catch (error) {
 		console.log('Error getting transactions from Etherscan.', error)
 	}
+	transactions.querySelector('img').style.display = 'none'
 
 	try {
 		await ethereum.request({ method: 'eth_requestAccounts' })
@@ -67,7 +67,9 @@ if (
 			ethers.utils.formatEther(await signer.getBalance())
 		)
 
-		document.getElementById('wallet').innerHTML = `Signed in as: ${myAddress.slice(0,6)}`
+		const resolvedName = await provider.lookupAddress(myAddress)
+		const myEns = resolvedName === null ? myAddress.slice(0, 6) : resolvedName
+		document.getElementById('wallet').innerHTML = `Signed in as: ${myEns}`
 
 		if (destinationAddress.includes('.eth')) {
 			destinationAddress = await provider.resolveName(destinationAddress)
@@ -98,7 +100,7 @@ if (
 			await signer
 				.sendTransaction({
 					to: destinationAddress,
-					data: ethers.utils.formatBytes32String('Sent with paymygas'),
+					data: ethers.utils.formatBytes32String('Sent with paymygas.xyz'),
 					value: ethers.utils.parseEther(amount),
 				})
 				.catch((err) => {
