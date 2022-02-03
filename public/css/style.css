@@ -29,6 +29,10 @@ h2 {
   font-size: 1.8rem;
 }
 
+img {
+  max-width: 100%;
+}
+
 a {
   color: #4b7ceb;
   transition: color ease-in-out 100ms;
@@ -103,6 +107,7 @@ a:focus {
 .form__error {
   color: #d96155;
   font-weight: 500;
+  font-size: 1rem;
 }
 
 .btn {
@@ -163,6 +168,10 @@ title-accent:focus {
   margin-bottom: 1rem;
   border-radius: 0.5rem;
   background-color: #ebecf1;
+}
+
+.transactions__loader {
+  width: 2rem;
 }
 
 .transaction__incoming {

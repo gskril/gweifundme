@@ -20,8 +20,10 @@ if (
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
 		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas'))
+		const transactions = document.querySelector('.transactions')
 		if (previousDonations.length > 0) {
-			document.querySelector('.transactions').style.display = "block"
+			transactions.querySelector('h2').style.display = 'block'
+			transactions.querySelector('img').style.display = 'none'
 			previousDonations.forEach(tx => {
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
@@ -44,7 +46,7 @@ if (
 					<span><strong>Amount:</strong> ${ethers.utils.formatEther(tx.value)} ETH</span>
 					<a class="transaction__link" href="https://etherscan.io/tx/${tx.hash}" target="_blank">&#8599;</a>
 				`
-				document.querySelector('.transactions').appendChild(transaction)
+				transactions.appendChild(transaction)
 			})
 		}
 	} catch (error) {
@@ -73,10 +75,10 @@ if (
 	} catch (error) {
 		try {
 			if (ethereum) {
-				alert(error.message)
+				errorMsg.innerHTML = error.message
 			}
 		} catch (error) {
-			errorMsg.innerHTML = "You need MetaMask installed."
+			errorMsg.innerHTML = "You'll need MetaMask to use PayMyGas."
 		}
 	}
 
