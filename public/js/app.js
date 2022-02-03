@@ -35,10 +35,12 @@ if (
 					</span>
 					<span>
 						<strong>${tx.from === destinationAddress ? 'To:' : 'From:'}</strong> 
-						<a class="transaction__address transaction__address--desktop" href="https://etherscan.io/address/${tx.from === destinationAddress ? tx.to : tx.from}">
+						<a class="transaction__address transaction__address--desktop" 
+							href="/${tx.from === destinationAddress ? tx.to : tx.from}">
 							${tx.from === destinationAddress ? tx.to : tx.from}
 						</a>
-						<a class="transaction__address transaction__address--mobile" href="https://etherscan.io/address/${tx.from === destinationAddress ? tx.to : tx.from}">
+						<a class="transaction__address transaction__address--mobile" 
+							href="/${tx.from === destinationAddress ? tx.to : tx.from}">
 							${tx.from === destinationAddress ? tx.to.slice(0,10) : tx.from.slice(0,10)}
 						</a>
 					</span>
