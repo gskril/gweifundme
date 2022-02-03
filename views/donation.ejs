@@ -7,7 +7,7 @@
   <title>Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas</title>
   <meta property="og:title" content="Help <%= address.includes('.eth') ? address : address.slice(0, 6) %> pay gas">
   <meta name="description" content="Donate ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
-  <meta name="og:description" content="Donate to ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
+  <meta name="og:description" content="Donate ETH to <%= address.includes('.eth') ? address : address.slice(0, 6) %>">
   <meta name="twitter:site" content="@gregskril" />
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="/css/style.css">
@@ -16,12 +16,13 @@
   <div class="container container--padding">
     <span id="wallet"></span>
     <div class="donation">
-      <h1>Help <span class="title-accent"><%= address %></span> pay gas</h1>
+      <h1>Help <a href="https://etherscan.io/address/<%= address %>" target="_blank"
+          class="title-accent"><%= address.includes('.eth') ? address : address.slice(0, 8) %></a> pay gas</h1>
     
       <form class="form" id="donate">
         <div class="form__input-group">
-          <label class="form__label" for="amount">How much ETH do you want to send?</label>
-          <input class="form__input" type="number" step="any" name="amount" id="amount" placeholder="0.01">
+          <label class="form__label" for="amount">How much ETH would you like to send?</label>
+          <input class="form__input" type="number" step="0.001" name="amount" id="amount" placeholder="0.001">
         </div>
         <button class="btn" id="donate-btn" type="submit" disabled>Donate</button>
         <p class="form__error"></p>

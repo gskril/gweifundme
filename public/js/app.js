@@ -26,9 +26,23 @@ if (
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
 				transaction.innerHTML = `
-					<span class="transaction__date">${new Date(tx.timestamp * 1000).toLocaleString()}</span>
-					<span class="transaction__amount">${ethers.utils.formatEther(tx.value)}</span>
-					<a href="https://etherscan.io/tx/${tx.hash}" target="_blank">Etherscan</a>
+					<span><strong>Type:</strong> 
+						${tx.from === destinationAddress 
+							? '<span class="transaction__outgoing">Outgoing</span>' 
+							: '<span class="transaction__incoming">Incoming</span>'}
+					</span>
+					<span>
+						<strong>${tx.from === destinationAddress ? 'To:' : 'From:'}</strong> 
+						<a class="transaction__address transaction__address--desktop" href="https://etherscan.io/address/${tx.from === destinationAddress ? tx.to : tx.from}">
+							${tx.from === destinationAddress ? tx.to : tx.from}
+						</a>
+						<a class="transaction__address transaction__address--mobile" href="https://etherscan.io/address/${tx.from === destinationAddress ? tx.to : tx.from}">
+							${tx.from === destinationAddress ? tx.to.slice(0,10) : tx.from.slice(0,10)}
+						</a>
+					</span>
+					<span><strong>Date:</strong> ${new Date(tx.timestamp * 1000).toLocaleString()}</span>
+					<span><strong>Amount:</strong> ${ethers.utils.formatEther(tx.value)} ETH</span>
+					<a class="transaction__link" href="https://etherscan.io/tx/${tx.hash}" target="_blank">&#8599;</a>
 				`
 				document.querySelector('.transactions').appendChild(transaction)
 			})
@@ -70,6 +84,12 @@ if (
 		e.preventDefault()
 		const amount = document.getElementById('amount').value
 
+		if (amount === '' || amount < 0) {
+			return errorMsg.innerHTML = "Please enter an amount."
+		} else {
+			errorMsg.innerHTML = ''
+		}
+
 		if (myBalance >= parseFloat(amount)) {
 			await signer
 				.sendTransaction({
@@ -78,10 +98,10 @@ if (
 					value: ethers.utils.parseEther(amount),
 				})
 				.catch((err) => {
-					alert(err.message)
+					errorMsg.innerHTML = err.message
 				})
 		} else {
-			alert('You do not have enough funds!')
+			errorMsg.innerHTML = 'You don\'t have enough ETH for that!'
 		}
 	})
 })()
