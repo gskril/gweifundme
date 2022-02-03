@@ -36,9 +36,15 @@ app.get('/:address', async (req, res) => {
       })
       .catch(err => {
         console.log(err.response)
-        res.send('Error resolving ENS name, please try with a full Ethereum address.')
+        res.render('index.ejs', {
+          error: 'Error resolving ENS name, please try with a full Ethereum address.'
+        })
       })
   } else {
-    res.render('donation.ejs', { address: address, ens: address.slice(0, 6) })
+    if (address.length !== 42 || !address.startsWith('0x')) {
+      res.render('index.ejs', { error: 'Invalid wallet address' })
+    } else {
+      res.render('donation.ejs', { address: address, ens: address.slice(0, 6) })
+    }
   }
 })
