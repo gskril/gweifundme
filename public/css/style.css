@@ -89,6 +89,16 @@ a:focus {
   margin-bottom: 0.5rem;
 }
 
+.form__value {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.form__value > * {
+  width: 100%;
+}
+
 .form__input {
   background-color: #ffffff;
   border: .125rem solid #d4d7db;

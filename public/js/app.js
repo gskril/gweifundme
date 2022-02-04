@@ -12,7 +12,11 @@ const errorMsg = document.querySelector('.form__error')
 
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
-		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas.xyz'))
+		const previousDonations = history.filter((tx) =>
+			tx.data ===
+				(ethers.utils.formatBytes32String('Sent with paymygas') ||
+				ethers.utils.formatBytes32String('Sent with paymygas.xyz'))
+		)
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
 			previousDonations.forEach(tx => {
@@ -78,6 +82,20 @@ const errorMsg = document.querySelector('.form__error')
 		}
 	}
 
+	// Show USD value of ETH
+	const ethValue = await etherscanProvider.getEtherPrice()
+	
+	function showUsdPrice(e) {
+		const amount = e.target.value
+		const usd = (ethValue * amount).toFixed(2)
+		document.getElementById('donation-usd').innerHTML = `$${usd} USD`
+	}
+
+	const donationAmount = document.getElementById('amount')
+	donationAmount.addEventListener('keyup', (e) => showUsdPrice(e))
+	donationAmount.addEventListener('change', (e) => showUsdPrice(e))
+
+	// Initiate transaction
 	document.getElementById('donate').addEventListener('submit', async (e) => {
 		e.preventDefault()
 		const amount = document.getElementById('amount').value

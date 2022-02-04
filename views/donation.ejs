@@ -39,7 +39,10 @@
       <form class="form" id="donate">
         <div class="form__input-group">
           <label class="form__label" for="amount">How much ETH would you like to send?</label>
-          <input class="form__input" type="number" step="0.001" name="amount" id="amount" placeholder="0.001">
+          <div class="form__value">
+            <input class="form__input" type="number" step="0.001" name="amount" id="amount" placeholder="0.001">
+            <label id="donation-usd"></label>
+          </div>
         </div>
         <button class="btn" id="donate-btn" type="submit" disabled>Donate</button>
         <p class="form__error"></p>
