@@ -1,13 +1,5 @@
 const errorMsg = document.querySelector('.form__error')
 
-if (
-	(!destinationAddress.includes('.eth') && !destinationAddress.includes('0x')) ||
-	(destinationAddress.includes('0x') && destinationAddress.length !== 42)
-) {
-	errorMsg.innerHTML =
-		'Double check the address before sending ETH. This one looks invalid.'
-}
-
 ;(async () => {
 	let signer
 	let provider
@@ -20,7 +12,7 @@ if (
 
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
-		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas'))
+		const previousDonations = history.filter(tx => tx.data === ethers.utils.formatBytes32String('Sent with paymygas.xyz'))
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
 			previousDonations.forEach(tx => {
