@@ -13,9 +13,8 @@ const errorMsg = document.querySelector('.form__error')
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
 		const previousDonations = history.filter((tx) =>
-			tx.data ===
-				(ethers.utils.formatBytes32String('Sent with paymygas') ||
-				ethers.utils.formatBytes32String('Sent with paymygas.xyz'))
+			tx.data === ethers.utils.formatBytes32String('Sent with gweifund.me') ||
+			tx.data === ethers.utils.formatBytes32String('Sent with paymygas')
 		)
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
@@ -78,7 +77,7 @@ const errorMsg = document.querySelector('.form__error')
 				errorMsg.innerHTML = error.message
 			}
 		} catch (error) {
-			errorMsg.innerHTML = "You'll need MetaMask to use PayMyGas."
+			errorMsg.innerHTML = "You'll need MetaMask to use GweiFundMe."
 		}
 	}
 
@@ -110,7 +109,7 @@ const errorMsg = document.querySelector('.form__error')
 			await signer
 				.sendTransaction({
 					to: destinationAddress,
-					data: ethers.utils.formatBytes32String('Sent with paymygas.xyz'),
+					data: ethers.utils.formatBytes32String('Sent with gweifund.me'),
 					value: ethers.utils.parseEther(amount),
 				})
 				.catch((err) => {

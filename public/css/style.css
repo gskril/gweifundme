@@ -27,6 +27,7 @@ h1 {
 
 h2 {
   font-size: 1.8rem;
+  font-weight: 600;
 }
 
 img {
@@ -74,7 +75,8 @@ a:focus {
 .hero__title {
   color: #4b7ceb;
   font-size: 3.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
+  line-height: 1;
 }
 
 .form {
@@ -225,6 +227,10 @@ title-accent:focus {
 }
 
 @media screen and (max-width: 40em) {
+  .hero__title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
   .transaction__address--desktop {
     display: none;
   }

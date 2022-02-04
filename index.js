@@ -49,3 +49,7 @@ app.get('/:address', async (req, res) => {
       }
     })
 })
+
+app.use((req, res) => {
+  res.status(404).render('index.ejs', { error: 'Page not found' })
+})
