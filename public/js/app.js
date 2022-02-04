@@ -18,6 +18,7 @@ const errorMsg = document.querySelector('.form__error')
 		)
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
+			previousDonations.reverse()
 			previousDonations.forEach(tx => {
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
