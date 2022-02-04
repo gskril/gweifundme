@@ -5,6 +5,7 @@ const errorMsg = document.querySelector('.form__error')
 	let provider
 	let myBalance
 	let etherscanProvider
+	let chainId
 	const transactions = document.querySelector('.transactions')
 
 	try {
@@ -63,14 +64,31 @@ const errorMsg = document.querySelector('.form__error')
 			ethers.utils.formatEther(await signer.getBalance())
 		)
 
-		const resolvedName = await provider.lookupAddress(myAddress)
-		const myEns = resolvedName === null ? myAddress.slice(0, 6) : resolvedName
-		document.getElementById('wallet').innerHTML = `Signed in as: ${myEns}`
-
-		if (destinationAddress.includes('.eth')) {
-			destinationAddress = await provider.resolveName(destinationAddress)
+		chainId = await provider.getNetwork()
+		chainId = chainId.chainId
+		let resolvedName
+		let myEns
+		
+		if (chainId === 1) {
+			// Ethereum
+			resolvedName = await provider.lookupAddress(myAddress)
+			myEns = resolvedName === null ? myAddress.slice(0, 6) : resolvedName
+		} else if (chainId === 137) {
+			// Polygon
+			myEns = myAddress.slice(0, 6)
+		} else {
+			return errorMsg.innerHTML = "Only Ethereum and Polygon are supported at this time."
 		}
 
+		if (destinationAddress.includes('.eth')) {
+			destinationAddress = fetch(`https://api.ensideas.com/ens/resolve/${destinationAddress}`)
+				.then(async (res) => {
+					const response = await res.json()
+					return response.address
+				})
+		}
+
+		document.getElementById('wallet').innerHTML = `Signed in as: ${myEns}`
 		document.getElementById('donate-btn').removeAttribute('disabled')
 	} catch (error) {
 		try {
@@ -82,18 +100,26 @@ const errorMsg = document.querySelector('.form__error')
 		}
 	}
 
-	// Show USD value of ETH
-	const ethValue = await etherscanProvider.getEtherPrice()
-	
-	function showUsdPrice(e) {
-		const amount = e.target.value
-		const usd = (ethValue * amount).toFixed(2)
-		document.getElementById('donation-usd').innerHTML = `$${usd} USD`
-	}
+	let ethValue
 
-	const donationAmount = document.getElementById('amount')
-	donationAmount.addEventListener('keyup', (e) => showUsdPrice(e))
-	donationAmount.addEventListener('change', (e) => showUsdPrice(e))
+	if (chainId === 1) {
+		// Show USD value of ETH
+		ethValue = await etherscanProvider.getEtherPrice()
+
+		function showUsdPrice(ethValue, e) {
+			const amount = e.target.value
+			const usd = (ethValue * amount).toFixed(2)
+			document.getElementById('donation-usd').innerHTML = `$${usd} USD`
+		}
+	
+		const donationAmount = document.getElementById('amount')
+		donationAmount.addEventListener('keyup', (e) => showUsdPrice(ethValue, e))
+		donationAmount.addEventListener('change', (e) => showUsdPrice(ethValue, e))
+	} else if (chainId === 137) {
+		// Show USD value of MATIC
+		document.querySelector('.form__label[for="amount"]').innerHTML = 'How much MATIC would you like to send?'
+		document.getElementById('donation-usd').innerHTML = ''
+	}
 
 	// Initiate transaction
 	document.getElementById('donate').addEventListener('submit', async (e) => {
