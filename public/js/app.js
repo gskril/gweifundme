@@ -100,26 +100,31 @@ const errorMsg = document.querySelector('.form__error')
 		}
 	}
 
-	let ethValue
+	let tokenValue
 
 	if (chainId === 1) {
 		// Show USD value of ETH
-		ethValue = await etherscanProvider.getEtherPrice()
-
-		function showUsdPrice(ethValue, e) {
-			const amount = e.target.value
-			const usd = (ethValue * amount).toFixed(2)
-			document.getElementById('donation-usd').innerHTML = `$${usd} USD`
-		}
-	
-		const donationAmount = document.getElementById('amount')
-		donationAmount.addEventListener('keyup', (e) => showUsdPrice(ethValue, e))
-		donationAmount.addEventListener('change', (e) => showUsdPrice(ethValue, e))
+		tokenValue = await etherscanProvider.getEtherPrice()
 	} else if (chainId === 137) {
 		// Show USD value of MATIC
+		tokenValue = fetch('https://min-api.cryptocompare.com/data/price?fsym=MATIC&tsyms=USD')
+			.then(async (res) => res.json())
+			.then(data => data.USD)
+		
+		tokenValue = await tokenValue
+		document.getElementById('amount').setAttribute('step', '0.1')
 		document.querySelector('.form__label[for="amount"]').innerHTML = 'How much MATIC would you like to send?'
-		document.getElementById('donation-usd').innerHTML = ''
 	}
+
+	function showUsdPrice(tokenValue, e) {
+		const amount = e.target.value
+		const usd = (tokenValue * amount).toFixed(2)
+		document.getElementById('donation-usd').innerHTML = `$${usd} USD`
+	}
+
+	const donationAmount = document.getElementById('amount')
+	donationAmount.addEventListener('keyup', (e) => showUsdPrice(tokenValue, e))
+	donationAmount.addEventListener('change', (e) => showUsdPrice(tokenValue, e))
 
 	// Initiate transaction
 	document.getElementById('donate').addEventListener('submit', async (e) => {
