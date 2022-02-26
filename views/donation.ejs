@@ -7,11 +7,11 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon-64.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png">
-  <title>Fund <%= ens %></title>
+  <title><%= ens === 'Ukraine' ? 'Donate to' : 'Fund' %> <%= ens %></title>
   <meta property="og:title" content="Fund <%= ens %> pay gas">
   <meta name="description" content="Donate ETH to <%= ens %>">
   <meta name="og:description" content="Donate ETH to <%= ens %>">
-  <meta name="og:image" content="https://banners.beyondco.de/<%= ens %>.png?theme=light&style=style_2&pattern=texture&description=gweifund.me&md=0&showWatermark=0&fontSize=100px&images=x&widths=0&heights=0">
+  <meta name="og:image" content="https://banners.beyondco.de/<%= ens === 'Ukraine' ? 'Donate%20to%20' : '' %><%= ens %>.png?theme=light&style=style_2&pattern=texture&description=gweifund.me&md=0&showWatermark=0&fontSize=100px&images=x&widths=0&heights=0">
   <meta name="og:image:width" content="2048">
   <meta name="og:image:height" content="1170">
   
@@ -33,7 +33,7 @@
   <div class="container container--padding">
     <span id="wallet"></span>
     <div class="donation">
-      <h1>Fund <a href="https://etherscan.io/address/<%= address %>" target="_blank"
+      <h1><%= ens === 'Ukraine' ? 'Donate to' : 'Fund' %> <a href="https://etherscan.io/address/<%= address %>" target="_blank"
           class="title-accent"><%= ens %></a></h1>
     
       <form class="form" id="donate">

@@ -17,6 +17,9 @@ app.get('/:address', async (req, res) => {
   const address = req.params.address
   
   if (address.length !== 42 && !address.endsWith('.eth')) {
+    if (address === 'ukraine') {
+      return res.render('donation.ejs', { address: '0x165CD37b4C644C2921454429E7F9358d18A45e14', ens: 'Ukraine' })
+    }
 		return res.render('index.ejs', { error: 'Invalid wallet address' })
   }
 
@@ -28,7 +31,11 @@ app.get('/:address', async (req, res) => {
       let data = await api.data
       let ens
       if (data.name === null) {
-        ens = address.slice(0, 8)
+        if (data.address === '0x165CD37b4C644C2921454429E7F9358d18A45e14') {
+          ens = 'Ukraine'
+        } else {
+          ens = address.slice(0, 8)
+        }
       } else if (data.address === null) {
         // Check for invalid ENS name
         return res.render('index.ejs', { error: 'Invalid ENS name' })
