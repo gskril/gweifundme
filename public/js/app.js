@@ -10,6 +10,7 @@ const errorMsg = document.querySelector('.form__error')
 
 	try {
 		etherscanProvider = new ethers.providers.EtherscanProvider('homestead', 'T9RV3FGW573WX9YX45F1Z89MEMEUNQXUC7')
+		ethPrice = await etherscanProvider.getEtherPrice()
 
 		// lookup past transactions for destinationAddress
 		const history  = await etherscanProvider.getHistory(destinationAddress)
@@ -21,6 +22,8 @@ const errorMsg = document.querySelector('.form__error')
 			transactions.querySelector('h2').style.display = 'block'
 			previousDonations.reverse()
 			previousDonations.forEach(tx => {
+				const priceInEth = ethers.utils.formatEther(tx.value)
+				const priceInUsd = parseFloat(priceInEth * ethPrice).toFixed(2)
 				const transaction = document.createElement('div')
 				transaction.classList.add('transaction')
 				transaction.innerHTML = `
@@ -41,7 +44,7 @@ const errorMsg = document.querySelector('.form__error')
 						</a>
 					</span>
 					<span><strong>Date:</strong> ${new Date(tx.timestamp * 1000).toLocaleString()}</span>
-					<span><strong>Amount:</strong> ${ethers.utils.formatEther(tx.value)} ETH</span>
+					<span><strong>Amount:</strong> ${priceInEth} ETH ($${priceInUsd} USD)</span>
 					<a class="transaction__link" href="https://etherscan.io/tx/${tx.hash}" target="_blank">&#8599;</a>
 				`
 				transactions.appendChild(transaction)
