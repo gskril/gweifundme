@@ -92,7 +92,7 @@ const errorMsg = document.querySelector('.form__error')
 			}
 		} catch (err) {
 			console.log(
-				`Error fetching ENS text records for ${destinaionEns}`,
+				`Error fetching ENS text records for ${destinationEns}`,
 				err
 			)
 		}

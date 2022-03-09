@@ -150,6 +150,26 @@ a:focus {
   pointer-events: none;
 }
 
+.announcement {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #4b7ceb;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #ffffff;
+  z-index: 1;
+  text-decoration: none;
+}
+
+.announcement:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
 .title-accent {
   color: #4b7ceb;
   text-shadow: 0.125rem 0.125rem 1rem rgb(150 156 165 / 30%);
