@@ -33,8 +33,13 @@
   <div class="container container--padding">
     <span id="wallet"></span>
     <div class="donation">
-      <h1><%= ens === 'Ukraine' ? 'Donate to' : 'Fund' %> <a href="https://etherscan.io/address/<%= address %>" target="_blank"
-          class="title-accent"><%= ens %></a></h1>
+      <h1>
+        <%= ens === 'Ukraine' ? 'Donate to' : 'Fund' %> <a href="https://etherscan.io/address/<%= address %>" target="_blank"
+          class="title-accent"><%= ens %></a>
+          <% if (avatar ) { %>
+            <img src="<%= avatar %>" width="42" alt="<%= ens %>'s avatar" class="title-avatar">
+          <% } %>
+      </h1>
     
       <form class="form" id="donate">
         <div class="form__input-group">

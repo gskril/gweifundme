@@ -162,6 +162,15 @@ title-accent:focus {
   color: #3560c7;
 }
 
+.title-avatar {
+  width: 2.625rem;
+  height: 2.625rem;
+  border-radius: 50%;
+  margin-left: 0.125rem;
+  transform: translateY(0.325rem);
+  box-shadow: 0.125rem 0.125rem 1rem rgb(150 156 165 / 10%);
+}
+
 .transactions {
   margin-top: 3rem;
 }

@@ -42,6 +42,7 @@ app.get('/:address', async (req, res) => {
       } else {
         address = data.address
         ens = data.name
+        avatar = data.avatar
       }
       res.render('donation.ejs', { address: address, ens: ens })
     })
