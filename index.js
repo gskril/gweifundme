@@ -14,7 +14,7 @@ app.listen(port, () => {
 })
 
 app.get('/:address', async (req, res) => {
-  const address = req.params.address
+  let address = req.params.address
   
   if (address.length !== 42 && !address.endsWith('.eth')) {
     if (address === 'ukraine') {
@@ -40,6 +40,7 @@ app.get('/:address', async (req, res) => {
         // Check for invalid ENS name
         return res.render('index.ejs', { error: 'Invalid ENS name' })
       } else {
+        address = data.address
         ens = data.name
       }
       res.render('donation.ejs', { address: address, ens: ens })
