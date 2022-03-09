@@ -101,16 +101,20 @@ const errorMsg = document.querySelector('.form__error')
 			return errorMsg.innerHTML = "Only Ethereum and Polygon are supported at this time."
 		}
 
-		if (destinationAddress.includes('.eth')) {
-			destinationAddress = fetch(`https://api.ensideas.com/ens/resolve/${destinationAddress}`)
-				.then(async (res) => {
-					const response = await res.json()
-					return response.address
-				})
-		}
-
 		document.getElementById('wallet').innerHTML = `Signed in as: ${myEns}`
 		document.getElementById('donate-btn').removeAttribute('disabled')
+
+		/* Get metadata from ENS to make a full profile
+
+		const resolver = await provider.getResolver(destinationEns)
+		const description = await resolver.getText("description")
+		const twitter = await resolver.getText("com.twitter")
+		const github = await resolver.getText("com.github")
+		const url = await resolver.getText("url")
+
+		console.log(description, twitter, discord, github, url)
+ 		*/
+		 
 	} catch (error) {
 		try {
 			if (ethereum) {
@@ -136,6 +140,8 @@ const errorMsg = document.querySelector('.form__error')
 		document.getElementById('amount').setAttribute('step', '0.1')
 		document.querySelector('.form__label[for="amount"]').innerHTML = 'How much MATIC would you like to send?'
 	}
+
+
 
 	function showUsdPrice(tokenValue, e) {
 		const amount = e.target.value
