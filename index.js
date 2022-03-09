@@ -47,7 +47,7 @@ app.get('/:address', async (req, res) => {
       res.render('donation.ejs', { address: address, ens: ens })
     })
     .catch(err => {
-      console.log('Error fetching data from ensideas api.', err.response)
+      console.log('Error fetching data from ensideas api.', err)
 
       try {
         res.render('donation.ejs', { address: address, ens: address.slice(0, 8) })

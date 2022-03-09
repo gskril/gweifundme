@@ -177,12 +177,27 @@ title-accent:focus {
 
 .profile.profile--active {
   display: block;
+  margin-top: -1rem;
   margin-bottom: 2rem;
   line-height: 1.4;
 }
 
 .profile__social {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+}
+
+.profile__link {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 0.5rem;
+  line-height: 1;
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.profile__link:hover,
+.profile__link:focus-visible {
+  opacity: 0.8;
 }
 
 .transactions {
