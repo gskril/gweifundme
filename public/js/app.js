@@ -8,6 +8,14 @@ const errorMsg = document.querySelector('.form__error')
 	let chainId
 	const transactions = document.querySelector('.transactions')
 
+	const getEnsName = async (addr) => {
+		return fetch(`https://api.ensideas.com/ens/resolve/${addr}`)
+			.then((res) => res.json())
+			.then((json) => {
+				return json.displayName
+			})
+	}
+
 	try {
 		etherscanProvider = new ethers.providers.EtherscanProvider('homestead', 'T9RV3FGW573WX9YX45F1Z89MEMEUNQXUC7')
 		ethPrice = await etherscanProvider.getEtherPrice()
@@ -21,34 +29,44 @@ const errorMsg = document.querySelector('.form__error')
 		if (previousDonations.length > 0) {
 			transactions.querySelector('h2').style.display = 'block'
 			previousDonations.reverse()
-			previousDonations.forEach(tx => {
+			for (let i = 0; i < previousDonations.length; i++) {
+				const tx = previousDonations[i]
+
 				const priceInEth = ethers.utils.formatEther(tx.value)
 				const priceInUsd = parseFloat(priceInEth * ethPrice).toFixed(2)
 				const transaction = document.createElement('div')
+				const to = await getEnsName(tx.to)
+				const from = await getEnsName(tx.from)
 				transaction.classList.add('transaction')
 				transaction.innerHTML = `
 					<span><strong>Type:</strong> 
-						${tx.from === destinationAddress 
-							? '<span class="transaction__outgoing">Outgoing</span>' 
-							: '<span class="transaction__incoming">Incoming</span>'}
+						${
+							tx.from === destinationAddress
+								? '<span class="transaction__outgoing">Outgoing</span>'
+								: '<span class="transaction__incoming">Incoming</span>'
+						}
 					</span>
 					<span>
 						<strong>${tx.from === destinationAddress ? 'To:' : 'From:'}</strong> 
-						<a class="transaction__address transaction__address--desktop" 
+						<a class="transaction__address" 
 							href="/${tx.from === destinationAddress ? tx.to : tx.from}">
-							${tx.from === destinationAddress ? tx.to : tx.from}
-						</a>
-						<a class="transaction__address transaction__address--mobile" 
-							href="/${tx.from === destinationAddress ? tx.to : tx.from}">
-							${tx.from === destinationAddress ? tx.to.slice(0,10) : tx.from.slice(0,10)}
+							${
+								tx.from === destinationAddress
+									? to
+									: from
+							}
 						</a>
 					</span>
-					<span><strong>Date:</strong> ${new Date(tx.timestamp * 1000).toLocaleString()}</span>
+					<span><strong>Date:</strong> ${new Date(
+						tx.timestamp * 1000
+					).toLocaleString()}</span>
 					<span><strong>Amount:</strong> ${priceInEth} ETH ($${priceInUsd} USD)</span>
-					<a class="transaction__link" href="https://etherscan.io/tx/${tx.hash}" target="_blank">&#8599;</a>
+					<a class="transaction__link" href="https://etherscan.io/tx/${
+						tx.hash
+					}" target="_blank">&#8599;</a>
 				`
 				transactions.appendChild(transaction)
-			})
+			}
 		}
 	} catch (error) {
 		console.log('Error getting transactions from Etherscan.', error)

@@ -193,6 +193,7 @@ title-accent:focus {
 
 .transactions__loader {
   width: 2rem;
+  margin-bottom: 1rem;
 }
 
 .transaction__incoming {
@@ -206,10 +207,6 @@ title-accent:focus {
 .transaction__address {
   color: inherit;
   text-decoration: none;
-}
-
-.transaction__address--mobile {
-  display: none;
 }
 
 .transaction__address:hover,
@@ -239,11 +236,5 @@ title-accent:focus {
   .hero__title {
     font-size: 3rem;
     margin-bottom: 1rem;
-  }
-  .transaction__address--desktop {
-    display: none;
-  }
-  .transaction__address--mobile {
-    display: inline;
   }
 }
