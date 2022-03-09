@@ -104,21 +104,54 @@ const errorMsg = document.querySelector('.form__error')
 		document.getElementById('wallet').innerHTML = `Signed in as: ${myEns}`
 		document.getElementById('donate-btn').removeAttribute('disabled')
 
-		/* Get metadata from ENS to make a full profile
-
+		// Get metadata from ENS to make a full profile
 		const resolver = await provider.getResolver(destinationEns)
-		const description = await resolver.getText("description")
-		const twitter = await resolver.getText("com.twitter")
-		const github = await resolver.getText("com.github")
-		const url = await resolver.getText("url")
+		const ensMetadata = {
+			description: await resolver.getText("description"),
+			twitter: await resolver.getText("com.twitter"),
+			github: await resolver.getText("com.github"),
+			url: await resolver.getText("url"),
+		}
+		
+		if (Object.values(ensMetadata).every((value) => value === null)) {
+			console.log('No ENS metadata found')
+		} else {
+			const profile = document.querySelector('.profile')
+			const socialLinks = document.querySelector('.profile__social')
+			profile.classList.add('profile--active')
 
-		console.log(description, twitter, discord, github, url)
- 		*/
-		 
+			if (ensMetadata.description) {
+				const descriptionEl = document.createElement('p')
+				descriptionEl.innerHTML = `${ensMetadata.description}`
+				profile.appendChild(descriptionEl)
+			}
+
+			if (ensMetadata.twitter) {
+				const twitterEl = document.createElement('p')
+				twitterEl.innerHTML = `Twitter: <a href="https://twitter.com/${ensMetadata.twitter}" target="_blank" rel="noreferrer">${ensMetadata.twitter}</a>`
+				socialLinks.appendChild(twitterEl)
+			}
+
+			if (ensMetadata.github) {
+				const githubEl = document.createElement('p')
+				githubEl.innerHTML = `GitHub: <a href="https://github.com/${ensMetadata.github}" target="_blank" rel="noreferrer">${ensMetadata.github}</a>`
+				socialLinks.appendChild(githubEl)
+			}
+
+			if (ensMetadata.url) {
+				const urlEl = document.createElement('p')
+				urlEl.innerHTML = `Website: <a href="${ensMetadata.url}" target="_blank" rel="noreferrer">${ensMetadata.url}</a>`
+				socialLinks.appendChild(urlEl)
+			}
+		}
 	} catch (error) {
 		try {
 			if (ethereum) {
-				errorMsg.innerHTML = error.message
+				if (error.message.includes('Already processing eth_requestAccounts')) {
+					errorMsg.innerHTML = 'You\ll need to unlock MetaMask and refresh the page to use GweiFundMe.'
+				} else {
+					errorMsg.innerHTML = error.message
+				}
 			}
 		} catch (error) {
 			errorMsg.innerHTML = "You'll need MetaMask to use GweiFundMe."

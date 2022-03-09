@@ -171,6 +171,20 @@ title-accent:focus {
   box-shadow: 0.125rem 0.125rem 1rem rgb(150 156 165 / 10%);
 }
 
+.profile {
+  display: none;
+}
+
+.profile.profile--active {
+  display: block;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+}
+
+.profile__social {
+  margin-top: 1rem;
+}
+
 .transactions {
   margin-top: 3rem;
 }
