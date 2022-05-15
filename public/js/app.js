@@ -24,12 +24,15 @@ const errorMsg = document.querySelector('.form__error')
 	) {
 		try {
 			// Get metadata from ENS to make a full profile
-			const resolver = await etherscanProvider.getResolver(destinationEns)
+			const data = await fetch(`https://ens-metadata-api.vercel.app/${destinationEns}?avatar`)
+				.then((res) => res.json())
+				.then((json) => json)
+
 			const ensRecords = {
-				description: await resolver.getText('description'),
-				twitter: await resolver.getText('com.twitter'),
-				github: await resolver.getText('com.github'),
-				url: await resolver.getText('url'),
+				description: data.records.description,
+				twitter: data.records.twitter,
+				github: data.records.github,
+				url: data.records.url,
 			}
 
 			if (Object.values(ensRecords).every((value) => value === null)) {
