@@ -29,10 +29,10 @@ const errorMsg = document.querySelector('.form__error')
 				.then((json) => json)
 
 			const ensRecords = {
-				description: data.records.description,
-				twitter: data.records.twitter,
-				github: data.records.github,
-				url: data.records.url,
+				description: data.description,
+				twitter: data.twitter,
+				github: data.github,
+				url: data.url,
 			}
 
 			if (Object.values(ensRecords).every((value) => value === null)) {
